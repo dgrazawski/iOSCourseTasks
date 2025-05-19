@@ -15,8 +15,3 @@ public func isBalancedParentheses(input: String) -> Bool {
     }
     return parenthesesCounter == 0
 }
-
-
-var str = ")[(()()])"
-
-print(isBalancedParentheses(input: str))
