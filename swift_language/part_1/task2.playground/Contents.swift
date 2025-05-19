@@ -1,16 +1,17 @@
 import Cocoa
 
-public func isPalindrome(input: String) -> Bool {
-    
-    var filtered = input.filter{
-        $0.isLetter
-    }.lowercased()
-    if filtered.count < 2 {
-        return false
+public func isBalancedParentheses(input: String) -> Bool {
+    var parenthesesCounter = 0
+    for letter in input {
+        if letter == "(" {
+            parenthesesCounter += 1
+        }
+        else if letter == ")" {
+            parenthesesCounter -= 1
+        }
+        if parenthesesCounter < 0 {
+            return false
+        }
     }
-    if filtered == String(filtered.reversed()){
-        return true
-    }
-    return false
+    return parenthesesCounter == 0
 }
-
