@@ -15,3 +15,29 @@ public func isBalancedParentheses(input: String) -> Bool {
     }
     return parenthesesCounter == 0
 }
+
+
+//let testCases = [
+//    ("()", true),
+//    ("(())", true),
+//    ("()()", true),
+//    ("abc(def)ghi", true),
+//    ("((a)b(c))", true),
+//    ("", true),
+//    ("(", false),
+//    (")", false),
+//    ("(()", false),
+//    ("())", false),
+//    ("(()))(()", false),
+//    (")abc(", false),
+//    ("abc", true),
+//    ("(((((((((())))))))))", true),
+//    ("(()()())())(()))", false),
+//    (")(", false),
+//    (")()(",false)
+//]
+//
+//for (input, expected) in testCases {
+//    let result = isBalancedParentheses(input: input)
+//    print("Input: \(input) → Result: \(result) → \(result == expected ? "✅" : "❌ Expected: \(expected)")")
+//}
