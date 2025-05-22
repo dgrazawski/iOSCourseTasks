@@ -1,8 +1,14 @@
 import Cocoa
 
+import Cocoa
+
 class Person{
     var name: String
     var age: Int
+    var isAdult: Bool {
+        return age >= 18
+    }
+    static let minAgeForEnrollment = 16
     
     init(name: String, age: Int) {
         self.name = name
@@ -10,7 +16,7 @@ class Person{
     }
     
     init?(age: Int){
-        if age >= 16 {
+        if age > 16 {
             self.name = "Default person"
             self.age = age
         } else {
@@ -51,28 +57,3 @@ struct University {
     let name: String
     let location: String
 }
-
-
-var obj1 = Person(age: 14)
-var obj2 = Person(age: 16)
-var obj3 = Person(name: "David", age: 32)
-
-var person = Person(age: 15)
-if let person = person {
-    print("IS initialized")
-} else {
-    print("not initialized")
-}
-
-var stud1 = Student(studentID: "12", major: "CS", name: "Dawid")
-var stud2 = Student(studentID: "13", major: "Math", name: "Maria", age: 24)
-
-dump(stud1)
-
-var prof1 = Professor(faculty: "Physics", name: "Adam", age: 58)
-
-dump(prof1)
-
-var uni1 = University(name: "UW", location: "Warsaw")
-
-dump(uni1)
