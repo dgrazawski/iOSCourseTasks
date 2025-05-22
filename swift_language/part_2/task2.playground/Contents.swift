@@ -57,7 +57,7 @@ var obj1 = Person(age: 14)
 var obj2 = Person(age: 16)
 var obj3 = Person(name: "David", age: 32)
 
-var person = Person(age: 15)
+var person = Person(age: 16)
 if let person = person {
     print("IS initialized")
 } else {
