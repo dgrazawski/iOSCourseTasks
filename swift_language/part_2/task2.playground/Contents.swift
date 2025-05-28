@@ -1,7 +1,7 @@
 import Cocoa
 
 class Person{
-    var name: String
+    let name: String
     var age: Int
     
     init(name: String, age: Int) {
@@ -24,7 +24,7 @@ class Person{
 
 class Student: Person {
     let studentID: String
-    var major: String
+    let major: String
     
     required init(studentID: String, major: String, name: String, age: Int) {
         self.studentID = studentID
@@ -39,7 +39,7 @@ class Student: Person {
 }
 
 class Professor: Person {
-    var faculty: String
+    let faculty: String
     
     init(faculty: String, name: String, age: Int) {
         self.faculty = faculty
@@ -53,26 +53,26 @@ struct University {
 }
 
 
-var obj1 = Person(age: 14)
-var obj2 = Person(age: 16)
-var obj3 = Person(name: "David", age: 32)
+let obj1 = Person(age: 14)
+let obj2 = Person(age: 16)
+let obj3 = Person(name: "David", age: 32)
 
-var person = Person(age: 16)
+let person = Person(age: 16)
 if let person = person {
     print("IS initialized")
 } else {
     print("not initialized")
 }
 
-var stud1 = Student(studentID: "12", major: "CS", name: "Dawid")
-var stud2 = Student(studentID: "13", major: "Math", name: "Maria", age: 24)
+let stud1 = Student(studentID: "12", major: "CS", name: "Dawid")
+let stud2 = Student(studentID: "13", major: "Math", name: "Maria", age: 24)
 
 dump(stud1)
 
-var prof1 = Professor(faculty: "Physics", name: "Adam", age: 58)
+let prof1 = Professor(faculty: "Physics", name: "Adam", age: 58)
 
 dump(prof1)
 
-var uni1 = University(name: "UW", location: "Warsaw")
+let uni1 = University(name: "UW", location: "Warsaw")
 
 dump(uni1)

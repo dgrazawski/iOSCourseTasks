@@ -1,13 +1,14 @@
 import Cocoa
 
 class Person{
-    var name: String
+    let name: String
     var age: Int
     var isAdult: Bool {
         return age >= 18
     }
     static let minAgeForEnrollment = 16
     lazy var profileDescription = "\(self.name) is \(self.age) years old."
+    
     init(name: String, age: Int) {
         self.name = name
         self.age = Person.minAgeForEnrollment
@@ -28,7 +29,7 @@ class Person{
 
 class Student: Person {
     let studentID: String
-    var major: String
+    let major: String
     var formattedID: String {
         return "ID: \(studentID)".uppercased()
     }
@@ -53,7 +54,7 @@ class Student: Person {
 }
 
 class Professor: Person {
-    var faculty: String
+    let faculty: String
     nonisolated(unsafe) static var professorCount = 0
     var fullTitle: String {
         return "Professor \(self.name) from \(faculty)."
@@ -89,9 +90,9 @@ print(stud1?.formattedID ?? "")
 print(stud1?.profileDescription ?? "")
 
 print("Prof count: \(Professor.professorCount)")
-var prof1 = Professor(faculty: "Math", name: "Adam", age: 58)
+let prof1 = Professor(faculty: "Math", name: "Adam", age: 58)
 print("Prof count: \(Professor.professorCount)")
 print(prof1.fullTitle)
 
-var uni1 = University(name: "UW", location: "Warsaw")
+let uni1 = University(name: "UW", location: "Warsaw")
 print(uni1.description)
