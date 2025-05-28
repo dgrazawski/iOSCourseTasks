@@ -2,7 +2,7 @@ import Cocoa
 
 class Person{
     let name: String
-    var age: Int
+    let age: Int
     
     init(name: String, age: Int) {
         self.name = name

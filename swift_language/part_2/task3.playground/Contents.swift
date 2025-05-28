@@ -2,7 +2,7 @@ import Cocoa
 
 class Person{
     let name: String
-    var age: Int
+    let age: Int
     var isAdult: Bool {
         return age >= 18
     }
