@@ -3,23 +3,6 @@ import Cocoa
 struct School {
     var listOfPeople: [Person] = []
     
-    enum SchoolRole{
-        case student
-        case teacher
-        case administrator
-    }
-    
-    class Person {
-        let name: String
-        var role: SchoolRole
-        
-        init(name: String, role: SchoolRole) {
-            self.name = name
-            self.role = role
-        }
-        
-    }
-    
     subscript(role: SchoolRole) -> [Person] {
         return listOfPeople.filter {
             $0.role == role
@@ -28,6 +11,23 @@ struct School {
     
     mutating func addPerson(_ person: Person) {
         listOfPeople.append(person)
+    }
+    
+    enum SchoolRole{
+        case student
+        case teacher
+        case administrator
+    }
+    
+    class Person {
+        let name: String
+        let role: SchoolRole
+        
+        init(name: String, role: SchoolRole) {
+            self.name = name
+            self.role = role
+        }
+        
     }
 }
 
