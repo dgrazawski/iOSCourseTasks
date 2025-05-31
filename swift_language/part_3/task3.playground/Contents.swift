@@ -9,9 +9,43 @@ let books = [
 ]
 
 
-//var discountedPrices: [Double] = books.compactMap {
-//    ($0["price"] as? Double ?? <#default value#>) * 0.9
-//}
+
+var discountedPrices: [Double] = books.compactMap { book in
+    if let book = book["price"] as? Double {
+        return book * 0.9
+    } else if let book = book["price"] as? Int {
+        print(book)
+        return Double(book) * 0.9
+    } else {
+        return nil
+    }
+}
+
+dump(discountedPrices)
+
+var booksPostedAfter2000: [String] = books.filter { book in
+    if let postYear = book["year"] as? Int {
+        return postYear > 2000
+    } else {
+        return false
+    }
+}
+.compactMap { book in
+    book["title"] as? String
+}
+
+dump(booksPostedAfter2000)
 
 
-var booksPostedAfter2000: [String] = books.filt
+var allGenres: Set<String> = Set(
+    books.flatMap { book in
+        book["genre"] as? [String] ?? []
+    }
+)
+
+dump(allGenres)
+
+
+var totalCost = books.reduce(0, {$0 + ($1["price"] as? Int ?? 0)})
+
+dump(totalCost)
