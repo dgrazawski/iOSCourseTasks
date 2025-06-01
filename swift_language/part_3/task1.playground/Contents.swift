@@ -101,7 +101,7 @@ class Library {
 let library = Library()
 
 
-let book = Book(title: "1984", author: "George Orwell")
+let book = Book(title: "LOTR", author: "JRR Tolkien")
 library.addBook(book)
 
 print("Added book with ID: \(book.id)")
@@ -154,7 +154,7 @@ class MusicRecord: Item {
     
 }
 
-let record = MusicRecord(title: "Swift Poster", author: "Apple Inc.")
+let record = MusicRecord(title: "Some title", author: "Some Band")
 library.items[record.id] = record
 
 do {
