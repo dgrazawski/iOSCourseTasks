@@ -120,7 +120,7 @@ do {
         
         
         do {
-            _ = try library.borrowItem(by: book.id)
+            let failedBorrow = try library.borrowItem(by: book.id)
         } catch {
             print("Failed to borrow again (already borrowed): \(error)")
         }
