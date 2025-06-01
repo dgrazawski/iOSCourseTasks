@@ -19,7 +19,7 @@ class Stack<T> {
 
 
 func printStackContents<T>(_ stack: Stack<T>) -> String {
-    var secondStack = Stack<T>()
+    let secondStack = Stack<T>()
     var contentsString = ""
     
     while let head = stack.pop() {
