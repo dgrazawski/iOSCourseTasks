@@ -94,6 +94,40 @@ class CalculatorVC: UIViewController {
         }
     }
     
+    private func sumNumbers(){
+        do {
+            guard let firstNumber = memory else { return }
+            guard let valueOnDisplay = currentValue else { return }
+            
+            switch calcSign {
+                
+            case .add:
+                memory = firstNumber + valueOnDisplay
+                displayResult(memory)
+                
+            case .divide:
+                if valueOnDisplay == 0 {
+                    throw CalcError.dividedByZero
+                }
+                memory = firstNumber / valueOnDisplay
+                displayResult(memory)
+                
+            case .multiply:
+                memory = firstNumber * valueOnDisplay
+                displayResult(memory)
+                
+            case .subtract:
+                memory = firstNumber - valueOnDisplay
+                displayResult(memory)
+            default:
+                return
+            }
+        } catch {
+            print("Dividing by 0 not allowed!")
+            calcDisplayLabel.text = "ERROR!!!"
+        }
+    }
+    
     @objc private func pressButton(_ sender: UIButton) {
         guard let labelValue = sender.titleLabel?.text else { return }
         switch labelValue {
@@ -137,37 +171,7 @@ class CalculatorVC: UIViewController {
             calcState = .clear
             
         case "=":
-            do {
-                guard let firstNumber = memory else { return }
-                guard let valueOnDisplay = currentValue else { return }
-                
-                switch calcSign {
-                    
-                case .add:
-                    memory = firstNumber + valueOnDisplay
-                    displayResult(memory)
-                    
-                case .divide:
-                    if valueOnDisplay == 0 {
-                        throw CalcError.dividedByZero
-                    }
-                    memory = firstNumber / valueOnDisplay
-                    displayResult(memory)
-                    
-                case .multiply:
-                    memory = firstNumber * valueOnDisplay
-                    displayResult(memory)
-                    
-                case .subtract:
-                    memory = firstNumber - valueOnDisplay
-                    displayResult(memory)
-                default:
-                    return
-                }
-            } catch {
-                print("Dividing by 0 not allowed!")
-                calcDisplayLabel.text = "ERROR!!!"
-            }
+           sumNumbers()
             
         default:
             return
