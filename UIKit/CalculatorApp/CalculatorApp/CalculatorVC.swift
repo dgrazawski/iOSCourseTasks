@@ -85,6 +85,15 @@ class CalculatorVC: UIViewController {
         }
     }
     
+    private func displayResult(_ value: Double?) {
+        guard let value = value else { return }
+        if value == floor(value) {
+            calcDisplayLabel.text = String(format: "%.0f", value)
+        } else {
+            calcDisplayLabel.text = String(value)
+        }
+    }
+    
     @objc private func pressButton(_ sender: UIButton) {
         guard let labelValue = sender.titleLabel?.text else { return }
         switch labelValue {
@@ -111,56 +120,47 @@ class CalculatorVC: UIViewController {
             memory = Double(calcDisplayLabel.text ?? "0")
             calcSign = .add
             calcState = .clear
+            
         case "-":
             memory = Double(calcDisplayLabel.text ?? "0")
             calcSign = .subtract
             calcState = .clear
+            
         case "*":
             memory = Double(calcDisplayLabel.text ?? "0")
             calcSign = .multiply
             calcState = .clear
+            
         case "/":
             memory = Double(calcDisplayLabel.text ?? "0")
             calcSign = .divide
             calcState = .clear
+            
         case "=":
             do {
                 guard let firstNumber = memory else { return }
                 guard let valueOnDisplay = currentValue else { return }
                 
                 switch calcSign {
+                    
                 case .add:
                     memory = firstNumber + valueOnDisplay
-                    if memory == floor(memory ?? 0.0) {
-                        calcDisplayLabel.text = String(format: "%.0f",memory ?? 0.0)
-                    } else {
-                        calcDisplayLabel.text = String(memory ?? 0.0)
-                    }
+                    displayResult(memory)
                     
                 case .divide:
                     if valueOnDisplay == 0 {
                         throw CalcError.dividedByZero
                     }
                     memory = firstNumber / valueOnDisplay
-                    if memory == floor(memory ?? 0.0) {
-                        calcDisplayLabel.text = String(format: "%.0f",memory ?? 0.0)
-                    } else {
-                        calcDisplayLabel.text = String(memory ?? 0.0)
-                    }
+                    displayResult(memory)
+                    
                 case .multiply:
                     memory = firstNumber * valueOnDisplay
-                    if memory == floor(memory ?? 0.0) {
-                        calcDisplayLabel.text = String(format: "%.0f",memory ?? 0.0)
-                    } else {
-                        calcDisplayLabel.text = String(memory ?? 0.0)
-                    }
+                    displayResult(memory)
+                    
                 case .subtract:
                     memory = firstNumber - valueOnDisplay
-                    if memory == floor(memory ?? 0.0) {
-                        calcDisplayLabel.text = String(format: "%.0f",memory ?? 0.0)
-                    } else {
-                        calcDisplayLabel.text = String(memory ?? 0.0)
-                    }
+                    displayResult(memory)
                 default:
                     return
                 }
