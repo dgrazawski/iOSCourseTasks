@@ -43,6 +43,10 @@ final class Task2ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setup()
+    }
+    
+    private func setup(){
         view.addSubview(label)
         view.addSubview(button)
         
