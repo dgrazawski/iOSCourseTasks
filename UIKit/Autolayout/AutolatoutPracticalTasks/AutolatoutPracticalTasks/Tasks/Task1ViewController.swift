@@ -18,6 +18,7 @@ final class Task1ViewController: UIViewController {
         label.backgroundColor = .white
         
         view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(
             [
                 label.centerXAnchor.constraint(equalTo: view.centerXAnchor),

@@ -43,19 +43,74 @@ final class Task3ViewController: UIViewController {
     }
     
     private func setupView() {
+        setupContentView()
         setupLabels()
         setupTextFields()
         setupButton()
+        setupConstraints()
+    }
+    
+    private func setupConstraints(){
+        
+        NSLayoutConstraint.activate([
+                //ContentView
+                contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                contentView.bottomAnchor.constraint(lessThanOrEqualTo: view.keyboardLayoutGuide.topAnchor),
+                contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+
+                //TitleLabel
+                titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
+                titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                titleLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+
+                //BodyLabel
+                bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+                bodyLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                bodyLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+
+                //UsernameField
+                usernameField.topAnchor.constraint(equalTo: bodyLabel.bottomAnchor, constant: 40),
+                usernameField.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                usernameField.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+
+                //PasswordField
+                passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16),
+                passwordField.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                passwordField.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+
+                //LoginButton
+                logInButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 16),
+                logInButton.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                logInButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+                logInButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+            ])
+    }
+    
+    private func setupContentView(){
+       // contentView.backgroundColor = .cyan
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        view.addSubview(contentView)
+        
     }
     
     private func setupLabels() {
         titleLabel.text = "Sign In"
         titleLabel.font = .boldSystemFont(ofSize: 32)
+       // titleLabel.backgroundColor = .red
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(titleLabel)
+        
         bodyLabel.numberOfLines = 3
         bodyLabel.text = """
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore
         """
+      //  bodyLabel.backgroundColor = .yellow
+        bodyLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(bodyLabel)
+        
     }
     
     private func setupTextFields() {
@@ -63,11 +118,19 @@ final class Task3ViewController: UIViewController {
         passwordField.placeholder = "Enter password"
         usernameField.borderStyle = .roundedRect
         passwordField.borderStyle = .roundedRect
+        usernameField.translatesAutoresizingMaskIntoConstraints = false
+        passwordField.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(usernameField)
+        contentView.addSubview(passwordField)
+        
     }
     
     private func setupButton() {
         logInButton.setTitle("Log In", for: .normal)
         logInButton.setTitleColor(.tintColor, for: .normal)
+        logInButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(logInButton)
+        
     }
 }
 
