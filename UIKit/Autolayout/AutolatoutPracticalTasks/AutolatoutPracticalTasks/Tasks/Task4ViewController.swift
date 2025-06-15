@@ -12,14 +12,14 @@ import UIKit
 // Hou can use iPhone 16 simulator for testing.
 final class Task4ViewController: UIViewController {
     
-    let firstV = {
+    private let firstV = {
         let view = UIView()
         view.backgroundColor = .green
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let secondV = {
+    private let secondV = {
         let view = UIView()
         view.backgroundColor = .red
         view.translatesAutoresizingMaskIntoConstraints = false
