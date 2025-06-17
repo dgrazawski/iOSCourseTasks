@@ -28,6 +28,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("🍏ProfileViewController: viewDidLoad()")
@@ -35,6 +36,9 @@ class ProfileViewController: UIViewController {
         view.addSubview(button)
         
         button.addTarget(self, action: #selector(moveToEdit), for: .touchUpInside)
+        let editNameButton = UIBarButtonItem(image: UIImage(systemName: "pencil.slash"), style: .plain, target: self, action: #selector(editName))
+        let anonymousNameButton = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill"), style: .plain, target: self, action: #selector(anonymousName))
+        navigationItem.rightBarButtonItems = [editNameButton, anonymousNameButton]
         
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
@@ -50,6 +54,30 @@ class ProfileViewController: UIViewController {
         let editVC = EditProfileViewController()
         editVC.title = "Edit profile"
         navigationController?.pushViewController(editVC, animated: true)
+    }
+    
+    @objc private func editName(){
+        let alertController = UIAlertController(title: "Edit name", message: "", preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.text = self.label.text
+            textField.placeholder = "Name"
+        }
+        let submitAction = UIAlertAction(title: "OK", style: .default) { _ in
+            if let text = alertController.textFields?.first?.text {
+                if text.isEmpty {
+                    self.label.text = "Default"
+                } else {
+                    self.label.text = text
+                }
+                
+            }
+        }
+        alertController.addAction(submitAction)
+        present(alertController, animated: true)
+    }
+    
+    @objc private func anonymousName(){
+        label.text = "Anonymous"
     }
     
     override func viewWillAppear(_ animated: Bool) {
