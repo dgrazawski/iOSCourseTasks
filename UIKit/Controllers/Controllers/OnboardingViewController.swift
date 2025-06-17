@@ -35,7 +35,6 @@ class OnboardingViewController: UIViewController {
         let personalVC = PersonalInfoViewController()
         personalVC.title = "Personal Info"
         navigationController?.pushViewController(personalVC, animated: true)
-        print("cos")
     }
 
 
