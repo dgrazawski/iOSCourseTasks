@@ -8,7 +8,7 @@
 import UIKit
 
 class EditProfileViewController: UIViewController {
-    let label = {
+    private let label = {
         let label = UILabel()
         label.text = "Label for visualization"
         label.font = .systemFont(ofSize: 25)

@@ -9,7 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    let button = {
+    private let button = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
@@ -19,7 +19,7 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
-    let label = {
+    private let label = {
         let label = UILabel()
         label.text = "Default"
         label.font = .systemFont(ofSize: 40)
