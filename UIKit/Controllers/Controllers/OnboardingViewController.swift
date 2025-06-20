@@ -21,9 +21,18 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        button.addTarget(self, action: #selector(pushButton), for: .touchUpInside)
+        
         view.addSubview(button)
         
+        configureButtons()
+        configureConstraints()
+    }
+    
+    private func configureButtons() {
+        button.addTarget(self, action: #selector(pushButton), for: .touchUpInside)
+    }
+    
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40),

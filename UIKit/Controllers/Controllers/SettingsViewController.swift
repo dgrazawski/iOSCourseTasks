@@ -22,6 +22,11 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(label)
         view.backgroundColor = .white
+        
+        configureConstraints()
+    }
+    
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),

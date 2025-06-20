@@ -23,6 +23,10 @@ class EditProfileViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(label)
         
+        configureConstraints()
+    }
+    
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),

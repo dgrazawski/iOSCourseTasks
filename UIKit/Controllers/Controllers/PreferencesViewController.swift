@@ -40,13 +40,22 @@ class PreferencesViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
         view.backgroundColor = .white
         view.addSubview(label)
         view.addSubview(changePreferencesButton)
         view.addSubview(confirmButton)
+        
+        setupButtons()
+        setupConstraints()
+    }
+    
+    private func setupButtons() {
         changePreferencesButton.addTarget(self, action: #selector(changePreferences), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(confirmPreferences), for: .touchUpInside)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             changePreferencesButton.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 200),
             changePreferencesButton.heightAnchor.constraint(equalToConstant: 50),

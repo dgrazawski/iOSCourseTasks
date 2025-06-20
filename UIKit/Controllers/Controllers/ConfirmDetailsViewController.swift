@@ -90,11 +90,18 @@ class ConfirmDetailsViewController: UIViewController {
         view.addSubview(editPersonalInfoButton)
         view.addSubview(confirmButton)
         
+        setupButtons()
+        setupConstraints()
+    }
+    
+    private func setupButtons() {
         startOverButton.addTarget(self, action: #selector(startOverAction), for: .touchUpInside)
         editPreferencesButton.addTarget(self, action: #selector(editPreferencesAction), for: .touchUpInside)
         editPersonalInfoButton.addTarget(self, action: #selector(editPersonalInfoAction), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(confirmAction), for: .touchUpInside)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             nameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40),

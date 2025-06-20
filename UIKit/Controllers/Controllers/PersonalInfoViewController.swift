@@ -55,13 +55,15 @@ class PersonalInfoViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(nameTextField)
         view.addSubview(phoneNumberTextField)
         view.addSubview(confirmationButton)
-        //setupAlert()
-        
-       // present(alertController, animated: true, completion: nil)
+
         nameTextField.delegate = self
         phoneNumberTextField.delegate = self
         updateButtonStatus()
         confirmationButton.addTarget(self, action: #selector(confirmButtonAction), for: .touchUpInside)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             label.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 20),

@@ -35,11 +35,18 @@ class ProfileViewController: UIViewController {
         view.addSubview(label)
         view.addSubview(button)
         
+        configureButtons()
+        configureConstraints()
+    }
+    
+    private func configureButtons() {
         button.addTarget(self, action: #selector(moveToEdit), for: .touchUpInside)
         let editNameButton = UIBarButtonItem(image: UIImage(systemName: "pencil.slash"), style: .plain, target: self, action: #selector(editName))
         let anonymousNameButton = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill"), style: .plain, target: self, action: #selector(anonymousName))
         navigationItem.rightBarButtonItems = [editNameButton, anonymousNameButton]
-        
+    }
+    
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
