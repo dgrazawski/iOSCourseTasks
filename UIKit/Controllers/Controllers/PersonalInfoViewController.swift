@@ -88,7 +88,10 @@ class PersonalInfoViewController: UIViewController, UITextFieldDelegate {
     private func setupAlert(){
         let alertController = UIAlertController(title: "Confirm Information", message: "Please confirm your name and phone number. Name: \(self.nameTextField.text ?? ""), Phone: \(self.phoneNumberTextField.text ?? "").", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) {_ in
-            
+            AppStorageClass["name"] = self.nameTextField.text ?? ""
+            AppStorageClass["phone"] = self.phoneNumberTextField.text ?? ""
+            let preferencesVC = PreferencesViewController()
+            self.navigationController?.pushViewController(preferencesVC, animated: true)
         }
         
         let editAction = UIAlertAction(title: "Edit", style: .cancel) { _ in

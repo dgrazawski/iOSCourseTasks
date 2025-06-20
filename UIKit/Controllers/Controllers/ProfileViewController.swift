@@ -44,6 +44,7 @@ class ProfileViewController: UIViewController {
             button.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 25),
+            
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             label.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor)

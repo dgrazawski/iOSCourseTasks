@@ -36,6 +36,11 @@ class OnboardingViewController: UIViewController {
         personalVC.title = "Personal Info"
         navigationController?.pushViewController(personalVC, animated: true)
     }
+    
+    func changeButton(){
+        button.setTitle("Restart", for: .normal)
+        button.configuration?.baseBackgroundColor = .green
+    }
 
 
 }
