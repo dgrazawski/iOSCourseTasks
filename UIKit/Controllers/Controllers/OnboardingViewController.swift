@@ -33,7 +33,7 @@ class OnboardingViewController: UIViewController {
     
     @objc private func pushButton() {
         let personalVC = PersonalInfoViewController()
-        personalVC.title = "Personal Info"
+      //  personalVC.title = "Personal Info"
         navigationController?.pushViewController(personalVC, animated: true)
     }
     

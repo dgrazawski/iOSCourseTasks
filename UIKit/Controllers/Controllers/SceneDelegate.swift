@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func createOnboardingNC() -> UINavigationController {
         let onboardingVC = OnboardingViewController()
-        onboardingVC.title = "Onboarding"
+        //onboardingVC.title = "Onboarding"
         onboardingVC.tabBarItem = UITabBarItem(title: "Onboarding", image: UIImage(systemName: "person.fill.badge.plus"), tag: 0)
         return UINavigationController(rootViewController: onboardingVC)
     }
