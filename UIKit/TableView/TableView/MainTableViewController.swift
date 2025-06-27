@@ -47,9 +47,29 @@ extension MainTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GymCell") as! GymClassCell
         let gymClass = classesData[indexPath.row]
-        cell.setGym(gymClass: gymClass)
+        //cell.setGym(gymClass: gymClass)
+        cell.gymClass = gymClass
+        cell.delegate = self
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            classesData.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            
+        }
+    }
     
+}
+
+protocol GymClassCellDelegate: AnyObject {
+    func presentAlert()
+}
+
+extension MainTableViewController: GymClassCellDelegate {
+    func presentAlert() {
+        print("Janusz")
+    }
 }

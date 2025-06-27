@@ -9,7 +9,7 @@ import UIKit
 
 class GymClassCell: UITableViewCell {
     
-    private let registerButton = {
+    private lazy var registerButton: UIButton = {
         var config = UIButton.Configuration.filled()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .default)
         let plusImage = UIImage(systemName: "plus.circle", withConfiguration: imageConfig)
@@ -18,6 +18,13 @@ class GymClassCell: UITableViewCell {
         config.baseBackgroundColor = .clear
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         let button = UIButton(configuration: config)
+        button.configurationUpdateHandler = { [unowned self] button in
+            var config = button.configuration
+            let symbolName = self.isRegistered ? "x.circle" : "plus.circle"
+            config?.image = UIImage(systemName: symbolName)
+            button.configuration = config
+        }
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -60,7 +67,7 @@ class GymClassCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(registerButton)
+        contentView.addSubview(registerButton)
         addSubview(timeLabel)
         addSubview(durationLabel)
         addSubview(classNameLabel)
@@ -73,12 +80,49 @@ class GymClassCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func buttonTapped(){
+        print("przedcos")
+        guard let delegate = delegate else { return }
+        delegate.presentAlert()
+        print("cos")
+    }
+    
     func setGym(gymClass: GymClassModel) {
         trainerImageView.image = gymClass.trainerPhoto
         timeLabel.text = gymClass.time
         durationLabel.text = "\(gymClass.duration) m"
         classNameLabel.text = gymClass.className
         trainerNameLabel.text = gymClass.trainerName
+        registerButton.configuration?.image = buttonStatus(gymClass.isRegistered)
+    }
+    
+    public var gymClass: GymClassModel? {
+        didSet {
+            guard let gymClass = gymClass else { return }
+            trainerImageView.image = gymClass.trainerPhoto
+            timeLabel.text = gymClass.time
+            durationLabel.text = "\(gymClass.duration) m"
+            classNameLabel.text = gymClass.className
+            trainerNameLabel.text = gymClass.trainerName
+        }
+    }
+    
+    weak var delegate: GymClassCellDelegate? {
+        didSet {
+            print("delegate ustawiony")
+        }
+    }
+    
+    public var isRegistered = false {
+        didSet{
+            
+        }
+    }
+    
+    private func buttonStatus(_ status: Bool) -> UIImage {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .default)
+        let buttonImage = UIImage(systemName: status ? "x.circle" : "plus.circle", withConfiguration: imageConfig)
+        return buttonImage ?? UIImage()
     }
     
     private func setConstraints() {

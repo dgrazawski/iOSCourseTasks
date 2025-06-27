@@ -19,7 +19,7 @@ struct GymClassModel {
     var isRegistered: Bool
     
     static let mockupData: [GymClassModel] = [
-        GymClassModel(className: "Calisthenics", day: "Monday 23 June 2025", time: "11:00", duration: "55", trainerName: "Steven Dumbbell", trainerPhoto: Images.trainer1, isRegistered: false),
+        GymClassModel(className: "Calisthenics", day: "Monday 23 June 2025", time: "11:00", duration: "55", trainerName: "Steven Dumbbell", trainerPhoto: Images.trainer1, isRegistered: true),
         GymClassModel(className: "Spinning", day: "Monday 23 June 2025", time: "12:00", duration: "40", trainerName: "Ash Bicycle", trainerPhoto: Images.trainer2, isRegistered: false),
         GymClassModel(className: "Yoga - Beginners", day: "Monday 23 June 2025", time: "13:00", duration: "30", trainerName: "Christian Monk", trainerPhoto: Images.trainer3, isRegistered: false),
         GymClassModel(className: "Olympic weightlifting", day: "Tuesday 24 June 2025", time: "09:00", duration: "60", trainerName: "Ariel Weightlifter", trainerPhoto: Images.trainer4, isRegistered: false),
