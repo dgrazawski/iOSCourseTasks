@@ -132,7 +132,7 @@ extension MainTableViewController: GymClassCellDelegate {
         let alertController = UIAlertController(title: "Gym Class", message: message, preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            // Handle OK button tap
+
         }
 
         alertController.addAction(okAction)
