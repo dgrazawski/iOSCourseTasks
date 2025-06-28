@@ -14,16 +14,21 @@ class GymClassCell: UITableViewCell {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .default)
         let plusImage = UIImage(systemName: "plus.circle", withConfiguration: imageConfig)
         config.image = plusImage
-        config.baseForegroundColor = .systemBlue
+      //  config.baseForegroundColor = .systemBlue
         config.baseBackgroundColor = .clear
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         let button = UIButton(configuration: config)
-        button.configurationUpdateHandler = { [unowned self] button in
-            var config = button.configuration
-            let symbolName = self.isRegistered ? "x.circle" : "plus.circle"
-            config?.image = UIImage(systemName: symbolName)
-            button.configuration = config
-        }
+//        button.configurationUpdateHandler = { [unowned self] button in
+//            var newConfig = UIButton.Configuration.filled()
+//            let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .default)
+//            let symbolName = self.isRegistered ? "x.circle" : "plus.circle"
+//            newConfig.image = UIImage(systemName: symbolName, withConfiguration: imageConfig)
+//            newConfig.baseForegroundColor = self.isRegistered ? .systemRed : .systemBlue
+//            newConfig.baseBackgroundColor = .clear
+//            newConfig.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+//            button.configuration = newConfig
+//            self.updateButtonAppearance(for: button)
+//        }
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -39,6 +44,7 @@ class GymClassCell: UITableViewCell {
     private let durationLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .light)
+        label.textColor = .systemPurple
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -52,6 +58,7 @@ class GymClassCell: UITableViewCell {
     
     private let trainerNameLabel = {
         let label = UILabel()
+        label.textColor = .systemPurple
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -80,9 +87,35 @@ class GymClassCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func updateButtonAppearance(for button: UIButton) {
+        var config = button.configuration
+        let imageName = isRegistered ? "x.circle" : "plus.circle"
+        let color: UIColor = isRegistered ? .systemRed : .systemBlue
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light)
+
+        config?.image = UIImage(systemName: imageName, withConfiguration: imageConfig)
+        config?.baseForegroundColor = color
+        button.configuration = config
+    }
+    
+    private func configureRegisterButton(for isRegistered: Bool) {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .clear
+
+        let imageName = isRegistered ? "x.circle" : "plus.circle"
+        let imageColor: UIColor = isRegistered ? .systemRed : .systemBlue
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light)
+
+        config.image = UIImage(systemName: imageName, withConfiguration: imageConfig)
+        config.baseForegroundColor = imageColor
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+
+        registerButton.configuration = config
+    }
+    
     @objc func buttonTapped(){
-                guard let gymClass = gymClass else { return }
-                guard let delegate = delegate else { return }
+        guard let gymClass = gymClass else { return }
+        guard let delegate = delegate else { return }
         //        gymClass.isRegistered = !gymClass.isRegistered
         //        isRegistered = gymClass.isRegistered
         //        print("gym class: \(gymClass.isRegistered), isregistered: \(isRegistered)")
@@ -91,16 +124,7 @@ class GymClassCell: UITableViewCell {
         delegate.didToggleRegistration(for: self)
         delegate.presentAlert(gymClass.className, isRegistered)
     }
-    
-    func setGym(gymClass: GymClassModel) {
-        trainerImageView.image = gymClass.trainerPhoto
-        timeLabel.text = gymClass.time
-        durationLabel.text = "\(gymClass.duration) m"
-        classNameLabel.text = gymClass.className
-        trainerNameLabel.text = gymClass.trainerName
-        registerButton.configuration?.image = buttonStatus(gymClass.isRegistered)
-    }
-    
+        
     public var gymClass: GymClassModel? {
         didSet {
             guard let gymClass = gymClass else { return }
@@ -110,7 +134,8 @@ class GymClassCell: UITableViewCell {
             classNameLabel.text = gymClass.className
             trainerNameLabel.text = gymClass.trainerName
             isRegistered = gymClass.isRegistered
-            registerButton.configuration?.image = buttonStatus(gymClass.isRegistered)
+          //  registerButton.configuration?.image = buttonStatus(gymClass.isRegistered)
+            configureRegisterButton(for: isRegistered)
         }
     }
     
@@ -123,16 +148,11 @@ class GymClassCell: UITableViewCell {
     public var isRegistered = false {
         didSet{
           //  print("is registered change")
-            registerButton.updateConfiguration()
+          //  registerButton.updateConfiguration()
+            configureRegisterButton(for: isRegistered)
         }
     }
-    
-    private func buttonStatus(_ status: Bool) -> UIImage {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .light, scale: .default)
-        let buttonImage = UIImage(systemName: status ? "x.circle" : "plus.circle", withConfiguration: imageConfig)
-        return buttonImage ?? UIImage()
-    }
-    
+        
     private func setConstraints() {
             let padding: CGFloat = 20
             let spacing: CGFloat = 8
@@ -147,7 +167,8 @@ class GymClassCell: UITableViewCell {
                 timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
                 timeLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -spacing / 2),
                 
-                durationLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
+                durationLabel.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
+             //   durationLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
                 durationLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 2),
                 
                 classNameLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: padding * 1.5),
