@@ -81,10 +81,15 @@ class GymClassCell: UITableViewCell {
     }
     
     @objc func buttonTapped(){
-        print("przedcos")
-        guard let delegate = delegate else { return }
-        delegate.presentAlert()
-        print("cos")
+                guard let gymClass = gymClass else { return }
+                guard let delegate = delegate else { return }
+        //        gymClass.isRegistered = !gymClass.isRegistered
+        //        isRegistered = gymClass.isRegistered
+        //        print("gym class: \(gymClass.isRegistered), isregistered: \(isRegistered)")
+        //        delegate.presentAlert(gymClass.className, isRegistered)
+        isRegistered.toggle()
+        delegate.didToggleRegistration(for: self)
+        delegate.presentAlert(gymClass.className, isRegistered)
     }
     
     func setGym(gymClass: GymClassModel) {
@@ -104,18 +109,21 @@ class GymClassCell: UITableViewCell {
             durationLabel.text = "\(gymClass.duration) m"
             classNameLabel.text = gymClass.className
             trainerNameLabel.text = gymClass.trainerName
+            isRegistered = gymClass.isRegistered
+            registerButton.configuration?.image = buttonStatus(gymClass.isRegistered)
         }
     }
     
     weak var delegate: GymClassCellDelegate? {
         didSet {
-            print("delegate ustawiony")
+           // print("delegate ustawiony")
         }
     }
     
     public var isRegistered = false {
         didSet{
-            
+          //  print("is registered change")
+            registerButton.updateConfiguration()
         }
     }
     
@@ -126,53 +134,33 @@ class GymClassCell: UITableViewCell {
     }
     
     private func setConstraints() {
-            let padding: CGFloat = 20 // Standard padding from edges
-            let spacing: CGFloat = 8 // Standard spacing between elements
+            let padding: CGFloat = 20
+            let spacing: CGFloat = 8
             
             NSLayoutConstraint.activate([
-                // MARK: - Register Button Constraints
-                // Vertically center the button
+
                 registerButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-                // Align to the trailing edge with some padding
                 registerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-                // Set a fixed width and height for the button to ensure it's circular
-                // The size of the SF Symbol itself dictates the visual size, but the button frame needs bounds.
-                // A size around 60x60 points seems appropriate for the 50pt symbol.
                 registerButton.widthAnchor.constraint(equalToConstant: 50),
                 registerButton.heightAnchor.constraint(equalToConstant: 50),
                 
-                // MARK: - Time and Duration Labels Constraints
-                // timeLabel leading edge aligned with cell's leading edge
                 timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-                // Position timeLabel slightly above the vertical center
                 timeLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -spacing / 2),
                 
-                // durationLabel leading edge aligned with timeLabel's leading edge
                 durationLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
-                // durationLabel top edge below timeLabel with standard spacing
-                durationLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 2), // Slightly less spacing visually
+                durationLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 2),
                 
-                // MARK: - Class Name and Trainer Info Constraints
-                // classNameLabel leading edge with a good space from timeLabel's trailing edge
                 classNameLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: padding * 1.5),
-                // classNameLabel trailing edge should not overlap with the registerButton
                 classNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: registerButton.leadingAnchor, constant: -padding),
-                // classNameLabel top aligned with timeLabel's top for a clean look
                 classNameLabel.topAnchor.constraint(equalTo: timeLabel.topAnchor),
                 
-                // trainerImageView leading edge aligned with classNameLabel's leading edge
                 trainerImageView.leadingAnchor.constraint(equalTo: classNameLabel.leadingAnchor),
-                // trainerImageView top edge below classNameLabel with spacing
                 trainerImageView.topAnchor.constraint(equalTo: classNameLabel.bottomAnchor, constant: spacing),
-                // Fixed size for the trainer image
                 trainerImageView.widthAnchor.constraint(equalToConstant: 30),
                 trainerImageView.heightAnchor.constraint(equalToConstant: 30),
                 
-                // trainerNameLabel leading edge to the right of trainerImageView
                 trainerNameLabel.leadingAnchor.constraint(equalTo: trainerImageView.trailingAnchor, constant: spacing),
-                // trainerNameLabel vertically centered with trainerImageView
                 trainerNameLabel.centerYAnchor.constraint(equalTo: trainerImageView.centerYAnchor),
-                // trainerNameLabel trailing edge should not overlap with the registerButton
                 trainerNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: registerButton.leadingAnchor, constant: -padding)
             ])
         }

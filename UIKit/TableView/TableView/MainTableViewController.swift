@@ -65,11 +65,31 @@ extension MainTableViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 protocol GymClassCellDelegate: AnyObject {
-    func presentAlert()
+    func presentAlert(_ gymClassName: String, _ status: Bool)
+    func didToggleRegistration(for cell: GymClassCell)
 }
 
 extension MainTableViewController: GymClassCellDelegate {
-    func presentAlert() {
-        print("Janusz")
+    func presentAlert(_ gymClassName: String, _ status: Bool) {
+        let message = status ? "You have registered to \(gymClassName), see you there!" : "You have just cancelled \(gymClassName) :("
+        let alertController = UIAlertController(title: "Gym Class", message: message, preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            // Handle OK button tap
+        }
+
+        alertController.addAction(okAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func didToggleRegistration(for cell: GymClassCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+
+        // Toggle in your model
+        classesData[indexPath.row].isRegistered.toggle()
+
+        // Reload just this cell
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
 }
