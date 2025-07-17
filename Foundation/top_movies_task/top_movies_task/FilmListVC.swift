@@ -1,0 +1,75 @@
+//
+//  FilmListVC.swift
+//  top_movies_task
+//
+//  Created by Dawid Grazawski on 10/07/2025.
+//
+
+import UIKit
+
+class FilmListVC: UIViewController {
+    
+    enum Section {
+        case main
+    }
+    
+    private var movies: [Movie] = []
+    
+    private var filmCollectionView: UICollectionView!
+    private var dataSource: UICollectionViewDiffableDataSource<Section,Movie>!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupCollectionView()
+        setupDataSource()
+        view.backgroundColor = .systemBackground
+        let network = NetworkManager()
+        let link = network.buildTopRatedURL(language: "en-US", page: 1)
+        network.getTopRated(url: link) { result in
+            switch result {
+            case .success(let list):
+                self.movies = list.results
+                self.updateData()
+                dump(list)
+            case .failure(let error):
+                print(error.rawValue)
+            }
+        }
+    }
+    
+    func setupCollectionView() {
+        filmCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: setupCollectionViewFlowLayout())
+        view.addSubview(filmCollectionView)
+        filmCollectionView.backgroundColor = .systemCyan
+        filmCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.identifier)
+    }
+    
+    func setupCollectionViewFlowLayout() -> UICollectionViewFlowLayout {
+        let width = view.bounds.width
+        let padding: CGFloat = 0
+        let availableWidth = width - (padding * 2)
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        flowLayout.itemSize = CGSize(width: availableWidth, height: availableWidth)
+        return flowLayout
+    }
+
+    func setupDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section,Movie>(collectionView: filmCollectionView, cellProvider: { (collectionView, indexPath, movie) -> UICollectionViewCell? in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as! MovieCell
+            cell.setupCell(movie: movie)
+            return cell
+        })
+    }
+    
+    func updateData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section,Movie>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(movies)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
+    }
+
+}
+

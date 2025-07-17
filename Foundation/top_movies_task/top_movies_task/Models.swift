@@ -15,7 +15,7 @@ struct ResultPage: Codable {
     let totalResults: Int
 }
 
-struct Movie: Codable {
+struct Movie: Codable, Hashable {
     let adult: Bool
     let backdropPath: String
     let genreIds: [Int]

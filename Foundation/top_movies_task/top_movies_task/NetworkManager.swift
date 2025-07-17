@@ -36,6 +36,12 @@ class NetworkManager {
         return linkBuild?.url
     }
     
+    func buildPicURL(bdPath: String) -> URL? {
+        let urlPath = URLParts.basePicUrl.rawValue + bdPath
+        let link = URL(string: urlPath)
+        return link
+    }
+    
     func getTopRated(url: URL?, completed: @escaping(Result<ResultPage, NetworkError>) -> Void) {
         guard let url = url else {
             completed(.failure(.linkError))
