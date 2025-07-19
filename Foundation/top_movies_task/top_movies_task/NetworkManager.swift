@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum URLParts: String {
     case baseUrl = "https://api.themoviedb.org/3/tv"
@@ -25,6 +26,21 @@ enum URLParts: String {
 }
 
 class NetworkManager {
+    let dataSession: URLSession
+    let picSession: URLSession
+    
+    init() {
+        let dataConfig = URLSessionConfiguration.default
+        dataConfig.timeoutIntervalForRequest = 15.0
+        dataConfig.requestCachePolicy = .reloadIgnoringLocalCacheData
+        self.dataSession = URLSession(configuration: dataConfig)
+        
+        let picConfig = URLSessionConfiguration.default
+        picConfig.timeoutIntervalForRequest = 60.0
+        picConfig.requestCachePolicy = .returnCacheDataElseLoad
+        self.picSession = URLSession(configuration: picConfig)
+    }
+    
     func buildTopRatedURL(language: String, page: Int) -> URL? {
         let urlPath = URLParts.baseUrl.rawValue + URLParts.Endpoints.topRated.rawValue
         var linkBuild = URLComponents(string: urlPath)
@@ -40,6 +56,34 @@ class NetworkManager {
         let urlPath = URLParts.basePicUrl.rawValue + bdPath
         let link = URL(string: urlPath)
         return link
+    }
+    
+    func getPoster(url: URL?, completed: @escaping(Result<UIImage, NetworkError>) -> Void) {
+        guard let url = url else {
+            completed(.failure(.linkError))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let _ = error {
+                completed(.failure(.networkError))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+            guard let image = UIImage(data: data) else {
+                completed(.failure(.invalidDecoding))
+                return
+            }
+            completed(.success(image))
+        }
+        
+        task.resume()
     }
     
     func getTopRated(url: URL?, completed: @escaping(Result<ResultPage, NetworkError>) -> Void) {

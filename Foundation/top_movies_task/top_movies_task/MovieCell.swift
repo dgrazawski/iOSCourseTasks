@@ -13,10 +13,11 @@ class MovieCell: UICollectionViewCell {
     
     private let nameLabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .regular)
-        label.textColor = .systemGray6
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -24,7 +25,7 @@ class MovieCell: UICollectionViewCell {
     private let firstAirDateLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray6
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +35,7 @@ class MovieCell: UICollectionViewCell {
     private let voteAverageLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray6
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +45,7 @@ class MovieCell: UICollectionViewCell {
     private let originCountryLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray6
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +55,7 @@ class MovieCell: UICollectionViewCell {
     private let popularityLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray6
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -64,9 +65,11 @@ class MovieCell: UICollectionViewCell {
     private let overviewLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray6
+        label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 0
+       // label.backgroundColor = .red
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -93,12 +96,13 @@ class MovieCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             posterImageViev.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             posterImageViev.widthAnchor.constraint(equalToConstant: 100),
+            posterImageViev.heightAnchor.constraint(equalToConstant: 148),
             posterImageViev.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             
             overviewLabel.topAnchor.constraint(equalTo: posterImageViev.bottomAnchor, constant: 15),
             overviewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             overviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            overviewLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -15),
             
             nameLabel.topAnchor.constraint(equalTo: posterImageViev.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: posterImageViev.trailingAnchor, constant: 15),
@@ -123,6 +127,7 @@ class MovieCell: UICollectionViewCell {
     }
     
     func setupUI() {
+        contentView.backgroundColor = .systemGray6
         contentView.addSubview(nameLabel)
         contentView.addSubview(firstAirDateLabel)
         contentView.addSubview(voteAverageLabel)
@@ -135,11 +140,23 @@ class MovieCell: UICollectionViewCell {
     
     func setupCell(movie: Movie) {
         nameLabel.text = movie.name
-        firstAirDateLabel.text = movie.firstAirDate
-        voteAverageLabel.text = String(movie.voteAverage)
+        firstAirDateLabel.text = "First air date - \(movie.firstAirDate)"
+        voteAverageLabel.text = "Rating - \(String(format: "%.1f", movie.voteAverage))"
         overviewLabel.text = movie.overview
-        originCountryLabel.text = movie.originCountry.joined(separator: ", ")
-        popularityLabel.text = String(movie.popularity)
+        originCountryLabel.text = "Countries - " + movie.originCountry.joined(separator: ", ")
+        popularityLabel.text = "Popularity - " + String(format: "%.0f", movie.popularity)
+        let manager = NetworkManager()
+        manager.getPoster(url: manager.buildPicURL(bdPath: movie.posterPath)) { [weak self] result in
+            switch result {
+            case .success(let img):
+                DispatchQueue.main.async {
+                    self?.posterImageViev.image = img
+                }
+                
+            case .failure(let error):
+                print(error.rawValue)
+            }
+        }
     }
     
 }

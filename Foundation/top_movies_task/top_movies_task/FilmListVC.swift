@@ -25,14 +25,15 @@ class FilmListVC: UIViewController {
         view.backgroundColor = .systemBackground
         let network = NetworkManager()
         let link = network.buildTopRatedURL(language: "en-US", page: 1)
-        network.getTopRated(url: link) { result in
+        network.getTopRated(url: link) { [weak self] result in
             switch result {
             case .success(let list):
-                self.movies = list.results
-                self.updateData()
+                self?.movies = list.results
+                self?.updateData()
                 dump(list)
             case .failure(let error):
                 print(error.rawValue)
+                self?.showAlert(message: error.rawValue)
             }
         }
     }
@@ -40,7 +41,7 @@ class FilmListVC: UIViewController {
     func setupCollectionView() {
         filmCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: setupCollectionViewFlowLayout())
         view.addSubview(filmCollectionView)
-        filmCollectionView.backgroundColor = .systemCyan
+       // filmCollectionView.backgroundColor = .systemCyan
         filmCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.identifier)
     }
     
@@ -73,3 +74,13 @@ class FilmListVC: UIViewController {
 
 }
 
+extension FilmListVC {
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+    }
+}
