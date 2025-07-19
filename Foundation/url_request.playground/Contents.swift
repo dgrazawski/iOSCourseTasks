@@ -31,27 +31,35 @@ struct Company: Codable {
 }
 
 
-let url = URL(string: "https://jsonplaceholder.typicode.com/users")!
+let url = URL(string: "https://jsonplaceholder.typicode.com/users")
 
-URLSession.shared.dataTask(with: url) { data, response, error in
-    if let error = error {
-        print("Error \(error) occured")
-        return
-    }
-    if let response = response as? HTTPURLResponse {
-        if response.statusCode != 200 {
+func getEmails(url: URL?) {
+    guard let url = url else { return }
+    
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        if let error = error {
+            print("Error \(error) occured")
             return
         }
-    }
-    guard let data = data else { return }
-    do {
-        let list = try JSONDecoder().decode([User].self, from: data)
-        for person in list {
-            print(person.email)
+        if let response = response as? HTTPURLResponse {
+            if response.statusCode != 200 {
+                return
+            }
         }
-    } catch {
-        print("Failed")
+        guard let data = data else { return }
+        do {
+            let list = try JSONDecoder().decode([User].self, from: data)
+            for person in list {
+                print(person.email)
+            }
+        } catch {
+            print("Failed")
+        }
+        
+        
     }
     
-    
-}.resume()
+    task.resume()
+}
+
+getEmails(url: url)
