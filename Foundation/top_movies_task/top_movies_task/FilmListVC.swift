@@ -26,19 +26,6 @@ class FilmListVC: UIViewController {
         setupDataSource()
         fetchData()
         view.backgroundColor = .systemBackground
-//        let network = NetworkManager()
-//        let link = network.buildTopRatedURL(language: "en-US", page: 1)
-//        network.getTopRated(url: link) { [weak self] result in
-//            switch result {
-//            case .success(let list):
-//                self?.movies = list.results
-//                self?.updateData()
-//                dump(list)
-//            case .failure(let error):
-//                print(error.rawValue)
-//                self?.showAlert(message: error.rawValue)
-//            }
-//        }
     }
     
     deinit {

@@ -146,18 +146,7 @@ class MovieCell: UICollectionViewCell {
         overviewLabel.text = movie.overview
         originCountryLabel.text = "Countries - " + movie.originCountry.joined(separator: ", ")
         popularityLabel.text = "Popularity - " + String(format: "%.0f", movie.popularity)
-//        let manager = NetworkManager()
-//        manager.getPoster(url: manager.buildPicURL(bdPath: movie.posterPath)) { [weak self] result in
-//            switch result {
-//            case .success(let img):
-//                DispatchQueue.main.async {
-//                    self?.posterImageViev.image = img
-//                }
-//                
-//            case .failure(let error):
-//                print(error.rawValue)
-//            }
-//        }
+
         let path = delegate?.network.buildPicURL(bdPath: movie.posterPath)
         delegate?.network.getPoster(url: path) { [weak self] result in
             switch result {
