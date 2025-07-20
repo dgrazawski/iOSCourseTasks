@@ -37,6 +37,7 @@ class NetworkManager {
         
         let picConfig = URLSessionConfiguration.default
         picConfig.timeoutIntervalForRequest = 60.0
+        picConfig.httpMaximumConnectionsPerHost = 20
         picConfig.requestCachePolicy = .returnCacheDataElseLoad
         self.picSession = URLSession(configuration: picConfig)
     }
@@ -64,13 +65,30 @@ class NetworkManager {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = picSession.dataTask(with: url) { data, response, error in
             if let _ = error {
                 completed(.failure(.networkError))
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let response = response as? HTTPURLResponse else {
+                completed(.failure(.networkError))
+                return
+            }
+
+            switch response.statusCode {
+            case 200...299:
+                break
+            case 400...499:
+                completed(.failure(.clientError))
+                return
+            case 500...599:
+                completed(.failure(.serverError))
+                return
+            default:
+                completed(.failure(.networkError))
+                return
+            }
             
             guard let data = data else {
                 completed(.failure(.invalidData))
@@ -92,13 +110,30 @@ class NetworkManager {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = dataSession.dataTask(with: url) { data, response, error in
             if let _ = error {
                 completed(.failure(.networkError))
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let response = response as? HTTPURLResponse else {
+                completed(.failure(.networkError))
+                return
+            }
+
+            switch response.statusCode {
+            case 200...299:
+                break
+            case 400...499:
+                completed(.failure(.clientError))
+                return
+            case 500...599:
+                completed(.failure(.serverError))
+                return
+            default:
+                completed(.failure(.networkError))
+                return
+            }
             
             guard let data = data else {
                 completed(.failure(.invalidData))
@@ -116,5 +151,10 @@ class NetworkManager {
         }
         
         task.resume()
+    }
+    
+    func invalidateAndCancel() {
+        dataSession.invalidateAndCancel()
+        picSession.invalidateAndCancel()
     }
 }

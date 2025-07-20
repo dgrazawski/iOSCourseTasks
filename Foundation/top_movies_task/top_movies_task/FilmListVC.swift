@@ -13,6 +13,8 @@ class FilmListVC: UIViewController {
         case main
     }
     
+    let network = NetworkManager()
+    
     private var movies: [Movie] = []
     
     private var filmCollectionView: UICollectionView!
@@ -22,8 +24,28 @@ class FilmListVC: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         setupDataSource()
+        fetchData()
         view.backgroundColor = .systemBackground
-        let network = NetworkManager()
+//        let network = NetworkManager()
+//        let link = network.buildTopRatedURL(language: "en-US", page: 1)
+//        network.getTopRated(url: link) { [weak self] result in
+//            switch result {
+//            case .success(let list):
+//                self?.movies = list.results
+//                self?.updateData()
+//                dump(list)
+//            case .failure(let error):
+//                print(error.rawValue)
+//                self?.showAlert(message: error.rawValue)
+//            }
+//        }
+    }
+    
+    deinit {
+        network.invalidateAndCancel()
+    }
+    
+    func fetchData() {
         let link = network.buildTopRatedURL(language: "en-US", page: 1)
         network.getTopRated(url: link) { [weak self] result in
             switch result {
@@ -58,6 +80,7 @@ class FilmListVC: UIViewController {
     func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section,Movie>(collectionView: filmCollectionView, cellProvider: { (collectionView, indexPath, movie) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as! MovieCell
+            cell.delegate = self
             cell.setupCell(movie: movie)
             return cell
         })
