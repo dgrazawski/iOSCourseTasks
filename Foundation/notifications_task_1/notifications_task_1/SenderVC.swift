@@ -9,6 +9,8 @@ import UIKit
 
 class SenderVC: UIViewController {
     
+    private var counter = 0
+    
     private let senderButton = {
         let button = UIButton(type: .system)
         let config = UIButton.Configuration.filled()
@@ -33,7 +35,8 @@ class SenderVC: UIViewController {
     }
     
     @objc func sendNotification() {
-        NotificationCenter.default.post(name: Notification.Name("SendToReceiver"), object: nil)
+        counter += 1
+        NotificationCenter.default.post(name: Notification.Name("SendToReceiver"), object: nil, userInfo: ["counter" : counter])
         print("sended")
     }
 

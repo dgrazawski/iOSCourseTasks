@@ -8,9 +8,7 @@
 import UIKit
 
 class ReceiverVC: UIViewController {
-    
-    private var counter = 0
-    
+        
     private let receiverLabel = {
         let label = UILabel()
         label.text = "Received 0 times"
@@ -29,8 +27,6 @@ class ReceiverVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.addSubview(receiverLabel)
-        // NotificationCenter.default.addObserver(self, selector: #selector(handleNotification), name: Notification.Name("SendToReceiver"), object: nil)
-        receiverLabel.text = "Received \(counter) times"
         NSLayoutConstraint.activate([
             receiverLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             receiverLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
@@ -41,7 +37,10 @@ class ReceiverVC: UIViewController {
     
     @objc func handleNotification(notification: Notification) {
         print("Notification received!")
-        counter += 1
-        receiverLabel.text = "Received \(counter) times"
+        guard let receivedCounter = notification.userInfo?["counter"] as? Int else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.receiverLabel.text = "Received \(receivedCounter) times"
+        }
+        
     }
 }
