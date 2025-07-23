@@ -2,9 +2,12 @@ import Foundation
 
 class Counter: @unchecked Sendable {
     var value = 0
+    let lock = NSLock()
 
     func increment() {
+        lock.lock()
         value += 1
+        lock.unlock()
     }
 }
 
