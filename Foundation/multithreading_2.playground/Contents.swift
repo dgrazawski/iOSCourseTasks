@@ -1,7 +1,5 @@
 import Foundation
 
-let declaredSemaphore = DispatchSemaphore(value: 2)
-
 func performTask(id: Int) {
     print("Task \(id) started")
     sleep(1) // Simulate a task taking time
@@ -9,6 +7,7 @@ func performTask(id: Int) {
 }
 
 func runConcurrentTasks() {
+    let declaredSemaphore = DispatchSemaphore(value: 2)
     let threads = (1...5).map { id in
         Thread {
             declaredSemaphore.wait()
