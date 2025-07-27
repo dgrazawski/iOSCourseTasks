@@ -20,7 +20,9 @@ struct Task4View: View {
             }
             Button {
                 if finished {
-                    api.ballance = 1000
+                    Task {
+                        await api.resetBalance()
+                    }
                     finished = false
                 } else {
                     Task {
@@ -60,5 +62,9 @@ actor Task4ViewAPI {
     
     func lowerBalance() {
         ballance -= 1
+    }
+    
+    func resetBalance() {
+        ballance = 1000
     }
 }

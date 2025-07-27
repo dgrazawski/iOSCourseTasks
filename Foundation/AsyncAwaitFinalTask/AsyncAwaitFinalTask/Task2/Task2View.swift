@@ -29,8 +29,6 @@ struct Task2View: View {
             do {
                 let startDate = Date.now
                 
-//                user = try await task2API.getUser()
-//                products = try await task2API.getProducts()
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     
                     group.addTask {
