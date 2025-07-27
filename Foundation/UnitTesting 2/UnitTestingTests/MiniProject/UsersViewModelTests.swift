@@ -45,6 +45,7 @@ class UsersViewModelTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(mockService.fetchUsersURL, "https://jsonplaceholder.typicode.com/users")
         XCTAssertEqual(mockService.fetchUsersCallsCount, 1)
         
     }
