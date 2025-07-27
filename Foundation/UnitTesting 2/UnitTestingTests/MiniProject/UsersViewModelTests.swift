@@ -24,7 +24,7 @@ class UsersViewModelTests: XCTestCase {
     func test_viewModel_whenFetchUsers_callsApiService() {
         let sut = makeSut()
         // TODO: Implement test
-        let expectation = XCTestExpectation(description: "Fetch users success")
+        let expectation = XCTestExpectation(description: "Fetch users completion")
         
         sut.fetchUsers {
             expectation.fulfill()
@@ -37,6 +37,15 @@ class UsersViewModelTests: XCTestCase {
     // assert that the passed url to api service is correct
     func test_viewModel_whenFetchUsers_passesCorrectUrlToApiService() {
         // TODO: Implement test
+        let sut = makeSut()
+        let expectation = XCTestExpectation(description: "Fetch users completion")
+        
+        sut.fetchUsers {
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(mockService.fetchUsersCallsCount, 1)
         
     }
 
@@ -85,7 +94,7 @@ class UsersViewModelTests: XCTestCase {
         mockService.fetchUsersResult = .failure(.unexpected)
         
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Fetch users finished")
+        let expectation = XCTestExpectation(description: "Fetch users completion")
         
         sut.fetchUsers {
             expectation.fulfill()
@@ -100,7 +109,7 @@ class UsersViewModelTests: XCTestCase {
         // TODO: Implement test
         mockService.fetchUsersResult = .failure(.parsingError)
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Fetch users finished")
+        let expectation = XCTestExpectation(description: "Fetch users completion")
         
         sut.fetchUsers {
             expectation.fulfill()
@@ -117,7 +126,7 @@ class UsersViewModelTests: XCTestCase {
             [User(id: 1, name: "name", username: "surname", email: "user@email.com")]
         )
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Fetch users success")
+        let expectation = XCTestExpectation(description: "Fetch users completion")
         
         sut.fetchUsers {
             expectation.fulfill()
