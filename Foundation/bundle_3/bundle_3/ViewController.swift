@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func loadConfigJson() -> ConfigurationModel? {
+    private func loadConfigJson() -> ConfigurationModel? {
         guard let path = Bundle.main.url(forResource: "configuration", withExtension: "json") else { return nil }
 
         do {
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
         
     }
     
-    func loadImages(configuration: ConfigurationModel) {
+    private func loadImages(configuration: ConfigurationModel) {
         var loadedImgs: [UIImage] = []
         for trainer in configuration.trainers {
             if let image = UIImage(named: trainer) {
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         tableImages = loadedImgs
     }
     
-    func setupConfig(configuration: ConfigurationModel) {
+    private func setupConfig(configuration: ConfigurationModel) {
         titleLabel.text = configuration.title
         titleLabel.font = .systemFont(ofSize: configuration.fontSize)
         overrideUserInterfaceStyle = configuration.darkMode ? .dark : .light
