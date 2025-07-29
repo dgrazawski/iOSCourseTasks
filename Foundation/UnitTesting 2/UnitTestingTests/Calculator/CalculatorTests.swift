@@ -26,7 +26,7 @@ final class CalculatorTests: XCTestCase {
     
     // Given a non-zero divisor, when dividing, then the result is the quotient
     func test_divideByNonZero() throws {
-        // TODO: Implement test
+
         let result = try calculator.divide(20, 10)
         XCTAssertEqual(2, result)
     }
@@ -34,7 +34,7 @@ final class CalculatorTests: XCTestCase {
     // Given a zero divisor, when dividing, then it throws a .divisionByZero error
     // use XCTAssertThrowsError, XCTAssertEqual
     func test_divideByZero_throwsError() {
-        // TODO: Implement test
+
         XCTAssertThrowsError(try calculator.divide(20, 0)) {error in
             XCTAssertEqual(error as? Calculator.CalculatorError, Calculator.CalculatorError.divisionByZero)
         }
@@ -44,7 +44,7 @@ final class CalculatorTests: XCTestCase {
     // Check 3 scenarios: < 10, 10, > 10
     // use XCTAssertTrue, XCTAssertFalse
     func test_isGreaterThanTen() {
-        // TODO: Implement test
+
         let resultSmaller = calculator.isGreaterThanTen(5)
         let resultEqual = calculator.isGreaterThanTen(10)
         let resultGreater = calculator.isGreaterThanTen(20)
@@ -55,7 +55,7 @@ final class CalculatorTests: XCTestCase {
 
     // Use XCTAssertNotNil and/or XCAssertEqual
     func test_safeSquareRoot_whenPositiveNumber_returnsValue() {
-        // TODO: Implement test
+
         let result = calculator.safeSquareRoot(25)
         XCTAssertNotNil(result)
         XCTAssertEqual(5, result)
@@ -63,7 +63,7 @@ final class CalculatorTests: XCTestCase {
 
     // Use XCTAssertNil
     func test_safeSquareRoot_whenNegativeNumber_returnsNil() {
-        // TODO: Implement test
+
         let result = calculator.safeSquareRoot(-25)
         XCTAssertNil(result)
     }

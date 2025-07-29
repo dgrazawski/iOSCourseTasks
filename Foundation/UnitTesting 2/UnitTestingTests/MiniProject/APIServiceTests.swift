@@ -24,20 +24,23 @@ final class APIServiceTests: XCTestCase {
     // pass some invalid url and assert that method completes with .failure(.invalidUrl)
     // use expectations
     func test_apiService_fetchUsers_whenInvalidUrl_completesWithError() {
-        // TODO: Implement test
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Invalid URL")
+        let expectation = expectation(description: "Invalid URL")
+
         
         sut.fetchUsers(urlString: "https:// jsonplaceholder.typicode.com/ users") { result in
             switch result {
             case .success:
                 XCTFail("Success on expected failure")
+                expectation.fulfill()
+                
             case .failure(let failure):
                 XCTAssertEqual(failure, APIError.invalidUrl)
                 expectation.fulfill()
+                
             }
         }
-        wait(for: [expectation], timeout: 1)
+        waitForExpectations(timeout: 1)
     }
 
     // assert that method completes with .success(expectedUsers)
@@ -52,8 +55,8 @@ final class APIServiceTests: XCTestCase {
         
         let sut = makeSut()
         
-        // TODO: Implement test
-        let expectation = XCTestExpectation(description: "Success response with fetching users")
+        let expectation = expectation(description: "Success response with fetching users")
+
         
         sut.fetchUsers(urlString: "https://jsonplaceholder.typicode.com/users") { result in
             switch result {
@@ -71,59 +74,63 @@ final class APIServiceTests: XCTestCase {
                 
             case .failure:
                 XCTFail("Failure on expected success")
+                expectation.fulfill()
             }
         }
         
-        wait(for: [expectation], timeout: 1)
+        waitForExpectations(timeout: 1)
     }
 
     // assert that method completes with .failure(.parsingError)
     func test_apiService_fetchUsers_whenInvalidSuccessfulResponse_completesWithFailure() {
-        // TODO: Implement test
         let invalidResponse = "Definitely not json file!!!".data(using: .utf8)
         mockURLSession.mockData = invalidResponse
         
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Failure response with parsing error")
+        let expectation = expectation(description: "Failure response with parsing error")
+
+        
         sut.fetchUsers(urlString: "https://jsonplaceholder.typicode.com/users") { result in
             switch result {
             case .success:
                 XCTFail("Success on expected failure")
+                expectation.fulfill()
             case .failure(let failure):
                 XCTAssertEqual(failure, APIError.parsingError)
                 expectation.fulfill()
+                
             }
         }
-        wait(for: [expectation], timeout: 1)
+        waitForExpectations(timeout: 1)
     }
 
     // assert that method completes with .failure(.unexpected)
     func test_apiService_fetchUsers_whenError_completesWithFailure() {
-        // TODO: Implement test
         let networkError = NSError(domain: "I'm a teapot", code: 418, userInfo: nil)
         mockURLSession.mockError = networkError
         
         let sut = makeSut()
-        let expectation = XCTestExpectation(description: "Network error completion")
+        let expectation = expectation(description: "Network error completion")
+
         
         sut.fetchUsers(urlString: "https://jsonplaceholder.typicode.com/users") { result in
             switch result {
             case .success:
                 XCTFail("Expected failure but got success")
+                expectation.fulfill()
             case .failure(let error):
                 XCTAssertEqual(error, APIError.unexpected)
                 expectation.fulfill()
             }
         }
         
-        wait(for: [expectation], timeout: 1.0)
+        waitForExpectations(timeout: 1)
     }
 
     // MARK: Fetch Users Async
 
     // pass some invalid url and assert that method completes with .failure(.invalidUrl)
     func test_apiService_fetchUsersAsync_whenInvalidUrl_completesWithError() async {
-        // TODO: Implement test
         let sut = makeSut()
         let result = await sut.fetchUsersAsync(urlString: "https:// jsonplaceholder.typicode.com/ users")
         
@@ -135,7 +142,7 @@ final class APIServiceTests: XCTestCase {
         }
     }
 
-    // TODO: Implement test
+
     // add other tests for fetchUsersAsync
     func test_apiService_fetchUsersAsync_whenValidSuccessfulResponse_completesWithSuccess() async {
         let response = """
