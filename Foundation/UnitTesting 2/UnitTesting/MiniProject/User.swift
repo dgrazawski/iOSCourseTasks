@@ -3,7 +3,7 @@
 //  UnitTesting
 //
 
-struct User: Decodable {
+struct User: Decodable, Equatable {
     let id: Int
     let name: String
     let username: String

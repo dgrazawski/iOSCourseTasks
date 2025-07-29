@@ -53,6 +53,11 @@ final class APIServiceTests: XCTestCase {
         """.data(using: .utf8)
         mockURLSession.mockData = response
         
+        let expectedUsers = [
+                User(id: 1, name: "John Doe", username: "johndoe", email: "johndoe@gmail.com"),
+                User(id: 2, name: "Jane Doe", username: "johndoe", email: "johndoe@gmail.com")
+            ]
+        
         let sut = makeSut()
         
         let expectation = expectation(description: "Success response with fetching users")
@@ -61,15 +66,16 @@ final class APIServiceTests: XCTestCase {
         sut.fetchUsers(urlString: "https://jsonplaceholder.typicode.com/users") { result in
             switch result {
             case .success(let users):
-                XCTAssertEqual(users.count, 2)
-                XCTAssertEqual(users[0].id, 1)
-                XCTAssertEqual(users[0].name, "John Doe")
-                XCTAssertEqual(users[0].username, "johndoe")
-                XCTAssertEqual(users[0].email, "johndoe@gmail.com")
-                XCTAssertEqual(users[1].id, 2)
-                XCTAssertEqual(users[1].name, "Jane Doe")
-                XCTAssertEqual(users[1].username, "johndoe")
-                XCTAssertEqual(users[1].email, "johndoe@gmail.com")
+//                XCTAssertEqual(users.count, 2)
+//                XCTAssertEqual(users[0].id, 1)
+//                XCTAssertEqual(users[0].name, "John Doe")
+//                XCTAssertEqual(users[0].username, "johndoe")
+//                XCTAssertEqual(users[0].email, "johndoe@gmail.com")
+//                XCTAssertEqual(users[1].id, 2)
+//                XCTAssertEqual(users[1].name, "Jane Doe")
+//                XCTAssertEqual(users[1].username, "johndoe")
+//                XCTAssertEqual(users[1].email, "johndoe@gmail.com")
+                XCTAssertEqual(users, expectedUsers)
                 expectation.fulfill()
                 
             case .failure:
