@@ -9,12 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
-  //  let network = NetworkManager()
     let cacheManager = CustomCacheManager(networkManager: NetworkManager())
     
     private var photos: [PhotoModel] = []
-    
-    private var tableImages: [UIImage] = []
     
     private let titleLabel = {
         let label = UILabel()
@@ -89,13 +86,11 @@ class ViewController: UIViewController {
     
     @objc func clearButtonTap() {
         cacheManager.clearCache()
-        tableImages.removeAll()
             photos.removeAll()
         tableView.reloadData()
     }
     
     @objc private func handleMemoryWarningInController(){
-        tableImages.removeAll()
             photos.removeAll()
         tableView.reloadData()
     }
@@ -103,51 +98,27 @@ class ViewController: UIViewController {
     func loadPhotos() {
         Task {
             do {
-                // Fetch photo metadata
                 self.photos = try await cacheManager.networkManager.fetchPhotos()
-                
-                // Start downloading all images in parallel
-                async let images: [UIImage] = withTaskGroup(of: UIImage?.self) { group in
-                    for photo in await photos {
-                        group.addTask {
-                            return try? await self.cacheManager.getImage(for: photo)
-                        }
-                    }
-                    
-                    var results: [UIImage] = []
-                    for await image in group {
-                        if let image = image {
-                            results.append(image)
-                        }
-                    }
-                    return results
-                }
-                
-                // Assign results to tableImages
-                self.tableImages = await images
-
-                // Reload table view on main thread
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-
             } catch {
-                print("Error loading photos: \(error)")
+                print("Error loading photo metadata: \(error)")
             }
         }
     }
-
-
+    
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableImages.count
+        photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
-        cell.config(image: tableImages[indexPath.row])
+        let photo = photos[indexPath.row]
+        cell.configure(with: photo, cacheManager: cacheManager)
         return cell
     }
     

@@ -10,6 +10,8 @@ import UIKit
 
 class ImageCell: UITableViewCell {
     
+    private var currentTask: Task<Void, Never>?
+    
     private let trainerImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -37,8 +39,23 @@ class ImageCell: UITableViewCell {
         ])
     }
     
-    func config(image: UIImage) {
-        trainerImageView.image = image
-    }
+    func configure(with photo: PhotoModel, cacheManager: CustomCacheManager) {
+            currentTask = Task {
+                do {
+                    let image = try await cacheManager.getImage(for: photo)
+                    await MainActor.run {
+                        self.trainerImageView.image = image
+                    }
+                } catch {
+                    print("Failed to load image for ID: \(photo.id)")
+                }
+            }
+        }
+    
+    override func prepareForReuse() {
+            super.prepareForReuse()
+            trainerImageView.image = nil
+            currentTask?.cancel()
+        }
 
 }
