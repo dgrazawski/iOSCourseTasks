@@ -11,8 +11,7 @@ import Combine
 class ViewController: UIViewController {
     
     private let viewModel = PostListVM()
-    private var cancellables = Set<AnyCancellable>()
-    private var posts: [PostModel] = []
+    private var subscription: AnyCancellable? = nil
     
     private let tableView = {
         let tableView = UITableView()
@@ -40,12 +39,11 @@ class ViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.$posts
+        subscription = viewModel.$posts
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] posts in
-                self?.posts = posts
                 self?.tableView.reloadData()
             }
-            .store(in: &cancellables)
     }
     
     
@@ -54,12 +52,12 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        return viewModel.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postTitle", for: indexPath)
-        let post = posts[indexPath.row]
+        let post = viewModel.posts[indexPath.row]
         cell.textLabel?.text = post.title
         return cell
     }
