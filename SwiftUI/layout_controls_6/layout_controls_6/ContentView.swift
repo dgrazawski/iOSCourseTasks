@@ -9,18 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var groceries = [
-        GroceryItemModel(name: "Salad", isEnabled: false),
+        GroceryItemModel(name: "Caesar Salad", isEnabled: false),
         GroceryItemModel(name: "Orange Juice", isEnabled: true),
         GroceryItemModel(name: "Tomato", isEnabled: false),
-        GroceryItemModel(name: "Potatoes", isEnabled: true)
+        GroceryItemModel(name: "Potatoes", isEnabled: true),
+        GroceryItemModel(name: "Red Bull", isEnabled: false),
+        GroceryItemModel(name: "Ice cream", isEnabled: true)
     ]
     var body: some View {
         List {
-            ForEach(groceries.indices, id: \.self) { index in
+            ForEach($groceries) { $grocery in
                 HStack {
-                    Text(groceries[index].name)
+                    Text(grocery.name)
                     Spacer()
-                    Toggle("Is enabled:", isOn: $groceries[index].isEnabled)
+                    Toggle("Is enabled:", isOn: $grocery.isEnabled)
                         .frame(width: 140)
                 }
             }
@@ -28,7 +30,7 @@ struct ContentView: View {
     }
 }
 
-struct GroceryItemModel: Identifiable, Hashable {
+struct GroceryItemModel: Identifiable {
     let id = UUID()
     let name: String
     var isEnabled: Bool

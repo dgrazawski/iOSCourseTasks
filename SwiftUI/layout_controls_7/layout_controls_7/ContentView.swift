@@ -15,6 +15,7 @@ struct ContentView: View {
             ProfileDetailView(user: User(name: "Jeremy", age: 45, location: "Warszawa", isPremium: false) )
         }
         .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -79,8 +80,6 @@ struct ProfileDetailView: View {
             }
             .font(.title2)
             .padding()
-            
-            Spacer()
         }
         .padding()
     }
