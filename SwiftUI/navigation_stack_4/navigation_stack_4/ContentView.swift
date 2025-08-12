@@ -22,6 +22,7 @@ struct ContentView: View {
             .navigationTitle("My App")
             .toolbarBackground(.blue, for: .navigationBar)
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            .toolbarTitleDisplayMode(.inlineLarge)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -30,24 +31,30 @@ struct ContentView: View {
                         Image(systemName: "gear")
                             .foregroundStyle(.white)
                     }
-
+                    
                 }
             }
             .navigationDestination(for: Destination.self) { destination in
-            switch destination {
-            case .settingsView:
-                SettingsView()
-            }
+                switch destination {
+                case .settingsView:
+                    SettingsView(path: $path)
+                }
             }
         }
     }
 }
 
 struct SettingsView: View {
+    @Binding var path: [Destination]
     var body: some View {
         VStack {
             Text("Settings view!")
                 .font(.largeTitle)
+            Button("Back") {
+                _ = path.popLast()
+            }
+            .buttonStyle(.borderedProminent)
+            .font(.title)
         }
         .navigationBarHidden(true)
     }
