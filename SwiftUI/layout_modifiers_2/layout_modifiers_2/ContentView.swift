@@ -13,17 +13,14 @@ struct ContentView: View {
             Rectangle()
                 .fill(Color.red)
                 .frame(width: 150, height: 100)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
             Rectangle()
                 .fill(Color.blue)
                 .frame(width: 150, height: 100)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-      //  .padding()
         .ignoresSafeArea()
-        //.background(Color.green)
-      //  .border(Color.green)
     }
 }
 
