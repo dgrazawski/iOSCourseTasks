@@ -28,6 +28,7 @@ struct SecondView: View {
     @Binding var isDark: Bool
     var body: some View {
         Toggle("Dark mode", isOn: $isDark)
+            .font(.title)
             .padding()
     }
 }

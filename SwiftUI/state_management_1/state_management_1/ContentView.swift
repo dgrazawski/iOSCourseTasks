@@ -12,13 +12,12 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 20) {
             Text("Counter value: \(counter)")
-                .font(.largeTitle)
             Button("+1") {
                 counter += 1
             }
             .buttonStyle(.borderedProminent)
-            .font(.largeTitle)
         }
+        .font(.largeTitle)
         .padding()
     }
 }

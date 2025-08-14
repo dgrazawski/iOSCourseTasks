@@ -12,13 +12,12 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 20) {
             Toggle("Show/hide text", isOn: $isOn)
-                .font(.largeTitle)
             if isOn {
                 Text("Hello, SwiftUI!")
-                    .font(.largeTitle)
             }
                 
         }
+        .font(.largeTitle)
         .padding()
     }
 }
